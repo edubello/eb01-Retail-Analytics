@@ -1,59 +1,65 @@
 """
-Módulo de Ingestão e Sanitização de Dados Brutos (Raw Layer)
+Script Principal de Orquestração do Pipeline Lakehouse
 Projeto: Retail Analytics Lakehouse (PySpark & Delta Lake)
 Autor: Eduardo de Castro Bello
 
-Responsável por verificar fontes brutas, aplicar correções estruturais iniciais 
-(como sanitização de JSON malformado) e preparar os dados para a camada Silver.
+Responsável por centralizar a execução das transformações Silver e Gold 
+caso o pipeline seja acionado via script Python (ex: Databricks Workflows).
 """
 
-import yaml
 from pathlib import Path
+import yaml
+from pyspark.sql import SparkSession
+
+from src.utils import load_settings
+from src.silver_transformations import transform_products, transform_users, transform_sales
+from src.gold_aggregations import build_obt_sales, build_agg_sales_by_product, build_agg_customer_ltv
 
 
-def load_config() -> dict:
-    """Carrega o arquivo de configuração settings.yaml."""
-    config_path = Path("config/settings.yaml") if Path("config/settings.yaml").exists() else Path("../config/settings.yaml")
-    with open(config_path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+def run_pipeline() -> None:
+    # Inicializa a sessão Spark (caso executado fora de um notebook)
+    spark = SparkSession.builder.appName("RetailAnalyticsPipeline").getOrCreate()
 
+    # 1. Carrega configurações do settings.yaml
+    config = load_settings()
+    catalog = config["databricks"]["catalog"]
+    bronze_schema = config["databricks"]["schemas"]["bronze"]
+    silver_schema = config["databricks"]["schemas"]["silver"]
+    gold_schema = config["databricks"]["schemas"]["gold"]
+    datasets = config["datasets"]
 
-def sanitize_products_json(raw_dir: str) -> None:
-    """
-    Realiza a inspeção e sanitização do arquivo products.json bruto,
-    corrigindo eventuais problemas de formatação de array (ex: colchetes ausentes).
-    """
-    products_file = Path(raw_dir) / "products.json"
-    
-    if not products_file.exists():
-        print(f"[WARNING] Arquivo não encontrado: {products_file}")
-        return
+    print(f"[INFO] Iniciando pipeline analítico no catálogo: {catalog}")
 
-    raw_text = products_file.read_text(encoding="utf-8").strip()
-    
-    # Corrige JSON caso não comece com colchete (array malformado)
-    if not raw_text.startswith("["):
-        sanitized_text = "[" + raw_text.rstrip(",") + "]"
-        products_file.write_text(sanitized_text, encoding="utf-8")
-        print("[INFO] Arquivo products.json sanitizado com sucesso (colchetes ajustados).")
-    else:
-        print("[INFO] Arquivo products.json já está estruturado corretamente.")
+    # --- CAMADA SILVER ---
+    print("[INFO] Processando Camada Silver...")
+    df_prod_bronze = spark.table(f"{catalog}.{bronze_schema}.{datasets['products']['bronze_table']}")
+    df_user_bronze = spark.table(f"{catalog}.{bronze_schema}.{datasets['users']['bronze_table']}")
+    df_sales_bronze = spark.table(f"{catalog}.{bronze_schema}.{datasets['sales']['bronze_table']}")
 
+    df_prod_silver = transform_products(df_prod_bronze)
+    df_user_silver = transform_users(df_user_bronze)
+    df_sales_silver = transform_sales(df_sales_bronze, df_user_silver, df_prod_silver)
 
-def run_ingestion_pipeline() -> None:
-    """Executa o processo de ingestão e preparação da camada raw."""
-    settings = load_config()
-    raw_dir = settings["paths"]["raw_data"]
-    
-    print(f"[INFO] Iniciando pipeline de ingestão. Diretório Raw: {raw_dir}")
-    
-    # Garante que o diretório raw existe
-    Path(raw_dir).mkdir(parents=True, exist_ok=True)
-    
-    # Sanitiza as fontes que necessitam de tratamento prévio
-    sanitize_products_json(raw_dir)
-    print("[SUCCESS] Processo de ingestão da Camada Raw concluído!")
+    # Gravação Silver
+    df_prod_silver.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{silver_schema}.dim_products")
+    df_user_silver.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{silver_schema}.dim_users")
+    df_sales_silver.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{silver_schema}.fact_sales")
+    print("[SUCCESS] Camada Silver processada e salva com sucesso!")
+
+    # --- CAMADA GOLD ---
+    print("[INFO] Processando Camada Gold...")
+    df_obt = build_obt_sales(df_sales_silver, df_prod_silver, df_user_silver)
+    df_agg_prod = build_agg_sales_by_product(df_obt)
+    df_agg_cust = build_agg_customer_ltv(df_obt)
+
+    # Gravação Gold
+    df_obt.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{gold_schema}.obt_sales_analytics")
+    df_agg_prod.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{gold_schema}.agg_sales_by_product")
+    df_agg_cust.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{catalog}.{gold_schema}.agg_customer_ltv")
+    print("[SUCCESS] Camada Gold processada e salva com sucesso!")
+
+    print("[SUCCESS] Pipeline completo executado com êxito!")
 
 
 if __name__ == "__main__":
-    run_ingestion_pipeline()
+    run_pipeline()
