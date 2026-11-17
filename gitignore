@@ -1,0 +1,35 @@
+---
+
+### 2. `.gitignore`
+
+```gitignore
+# Ambientes virtuais e Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Jupyter / Databricks / IDEs
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dados locais e arquivos temporários
+data/
+src/data/
+*.parquet
+*.csv
+*.json
+!config/*.json
+
+# Logs e Sistema Operacional
+*.log
+.DS_Store
+Thumbs.db
