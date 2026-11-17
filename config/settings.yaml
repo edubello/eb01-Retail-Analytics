@@ -3,27 +3,39 @@ app:
   environment: "development"
   log_level: "INFO"
 
+# Definição oficial da estrutura no Unity Catalog
+databricks:
+  catalog: "retail_analytics"
+  schemas:
+    landing: "landing"
+    bronze: "bronze"
+    silver: "silver"
+    gold: "gold"
+  volumes:
+    raw_volume: "raw_files"
+
 paths:
   raw_data: "data/raw"
   processed_data: "data/processed"
-  bronze_layer: "data/lakehouse/bronze"
-  silver_layer: "data/lakehouse/silver"
-  gold_layer: "data/lakehouse/gold"
 
 spark:
   master: "local[*]"
   app_name: "pyspark-retail-analytics-dev"
   configs:
-    spark.sql.shuffle.partitions: "4"  # Otimizado para execuções locais pequenas
+    spark.sql.shuffle.partitions: "4"
     spark.default.parallelism: "4"
 
+# Mapeamento parametrizado dos datasets do projeto
 datasets:
   sales:
-    raw_filename: "sales_raw.json"
-    format: "json"
-  customers:
-    raw_filename: "customers_raw.csv"
+    filename: "sales.csv"
     format: "csv"
+    bronze_table: "bronze_sales"
+  users:
+    filename: "users.csv"
+    format: "csv"
+    bronze_table: "bronze_users"
   products:
-    raw_filename: "products_raw.csv"
-    format: "csv"
+    filename: "products.json"
+    format: "json"
+    bronze_table: "bronze_products"
