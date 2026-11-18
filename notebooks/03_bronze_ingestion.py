@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 from pyspark.sql import functions as F
 
-# 1. Resolução robusta da raiz do projeto
+# 1. Raiz do projeto
 current_path = Path.cwd()
 PROJECT_ROOT = current_path.parent if current_path.name in ("src", "notebooks") else current_path
 config_path = PROJECT_ROOT / "config" / "settings.yaml"
