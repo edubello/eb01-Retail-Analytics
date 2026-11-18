@@ -9,7 +9,7 @@ Pipeline de Engenharia de Dados ponta a ponta construído no **Databricks** util
 ```mermaid
 graph TD
     %% Fontes Externas e Landing Zone
-    Ext[Fontes Externas<br/>sales.csv · users.csv · products.json] -->|Ingestão POSIX| Vol[Unity Catalog Volume<br/>retail_analytics.landing.raw_files]
+    Ext[Fontes Externas<br/>sales.csv · users.csv · products.json] -->|Ingestão| Vol[Unity Catalog Volume<br/>retail_analytics.landing.raw_files]
 
     %% Data Discovery & Sanitização
     Vol -->|02_1 Data Discovery & Fix| CleanVol[Landing Zone Sanitizada<br/>JSON Validado & Quality Gates]
