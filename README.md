@@ -81,12 +81,12 @@ pyspark-retail-analytics/
 | :--- | :--- | :--- |
 | **Landing** | `raw_files` (Volume) | Arquivos originais (`sales.csv`, `users.csv`, `products.json`) após sanitização estrutural. |
 | **Bronze** | `bronze_sales`, `bronze_users`, `bronze_products` | Dados brutos persistidos em formato Delta Lake com timestamp de ingestão e arquivo de origem. |
-| **Silver** | `dim_products` | Catálogo deduplicado de produtos com preços higienizados via Regex para `Decimal(10,2)`.[cite: 12] |
-| **Silver** | `dim_users` | Cadastro padronizado de clientes (campos sensíveis como senhas removidos na camada).[cite: 12] |
-| **Silver** | `fact_sales` | Fato de vendas validada por integridade referencial com cálculo de `total_amount`.[cite: 12] |
-| **Gold** | `obt_sales_analytics` | *One Big Table* desnormalizada unindo vendas, clientes e produtos para análise self-service.[cite: 12] |
-| **Gold** | `agg_sales_by_product` | Ranking de produtos por receita total, pedidos distintos, unidades vendidas e preço médio.[cite: 12] |
-| **Gold** | `agg_customer_ltv` | Indicadores de *Lifetime Value* (LTV), frequência de pedidos e ticket médio por cliente.[cite: 12] |
+| **Silver** | `dim_products` | Catálogo deduplicado de produtos com preços higienizados via Regex para `Decimal(10,2)` |
+| **Silver** | `dim_users` | Cadastro padronizado de clientes (campos sensíveis como senhas removidos na camada). |
+| **Silver** | `fact_sales` | Fato de vendas validada por integridade referencial com cálculo de `total_amount`. |
+| **Gold** | `obt_sales_analytics` | *One Big Table* desnormalizada unindo vendas, clientes e produtos para análise self-service.|
+| **Gold** | `agg_sales_by_product` | Ranking de produtos por receita total, pedidos distintos, unidades vendidas e preço médio. |
+| **Gold** | `agg_customer_ltv` | Indicadores de *Lifetime Value* (LTV), frequência de pedidos e ticket médio por cliente. |
 
 
 
