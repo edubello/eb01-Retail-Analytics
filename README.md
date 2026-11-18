@@ -99,9 +99,7 @@ Revisar config/settings.yaml caso deseje alterar o nome do catálogo (retail_ana
 Executar os notebooks em sequência (01 → 02_0 → 02_1 → 03 → 04 → 05) em um cluster Databricks com suporte a Unity Catalog.
 
 (Opcional) Para reprocessar apenas as camadas analíticas Silver e Gold via script Python:
-
-### Bash
-python -m src.main
+**python -m src.main**
 
 Autor **Eduardo de Castro Bello** Data & Analytics Engineer
 
