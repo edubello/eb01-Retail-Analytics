@@ -48,11 +48,12 @@ graph TD
 **Linhagem e Auditoria:** Todas as tabelas carregam colunas técnicas de rastreabilidade (_ingestion_timestamp, _source_file, _bronze_ingested_at, _silver_processed_at, _gold_processed_at).
 
 <br>
+
 ### Nota de Desenvolvimento:
 Este projeto foi concebido e estruturado como um laboratório prático e avançado para consolidar padrões de engenharia moderna no Databricks. Cada módulo (camadas, sanitização de JSON, validação de schemas e OBTs) foi rigorosamente analisado, testado e ajustado por mim para garantir o alinhamento com as melhores práticas de mercado (Clean Code e arquitetura orientada a metadados)
 
 <br>
-
+<br>
 
 ## Estrutura do Repositório
 
