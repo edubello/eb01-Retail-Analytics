@@ -49,6 +49,7 @@ Para garantir que a camada **Silver** seja a "única fonte da verdade", estabele
 
 ### 4.2. Classificação RFM Simplificada (Silver, Gold, Platinum - Questão Q6)
 * **Decisão:** Segmentação de clientes com base em limites estatísticos sem sobreposição de fronteiras:
+
   * **Platinum:** $\text{Gasto Total} > \text{Média}$
   * **Gold:** $\text{Média} - \text{Desvio Padrão} < \text{Gasto Total} \le \text{Média}$
   * **Silver:** $\text{Gasto Total} \le \text{Média} - \text{Desvio Padrão}$
