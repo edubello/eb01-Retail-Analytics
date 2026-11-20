@@ -29,7 +29,8 @@ O objetivo desta auditoria foi mapear inconsistências de schema, anomalias estr
 Para garantir que a camada **Silver** seja a "única fonte da verdade", estabelecemos travamentos automatizados por asserções (*Quality Gates*) antes de alimentar as regras de negócio analíticas:
 
 1. **Unicidade de Chave Primária:**
-   Vendas Totais - Vendas Distintas sale_id = 0
+   `Vendas Totais` -  `Vendas Distintas por sale_id `= 0 
+   <br>
    *Garante a ausência de transações duplicadas.*
 
 2. **Integridade de Chaves Mandatórias:**
