@@ -4,7 +4,14 @@ Pipeline de Engenharia de Dados ponta a ponta construído no **Databricks** util
 <br> <br>
 [![Databricks](https://img.shields.io/badge/Databricks-Free%20Edition-red?style=flat-square&logo=databricks)](https://databricks.com/)
 [![Delta Lake](https://img.shields.io/badge/Storage-Delta%20Lake-blue?style=flat-square)](https://delta.io/)
-[![Python|154](https://img.shields.io/badge/Language-PySpark-yellow?style=flat-square&logo=python)](https://spark.apache.org/)
+[![PySpark](https://img.shields.io/badge/Language-PySpark-yellow?style=flat-square&logo=apachespark)](https://spark.apache.org/)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![SQL](https://img.shields.io/badge/SQL-Spark%20SQL%20%2F%20ANSI-02569B?style=flat-square&logo=databricks&logoColor=white)](https://docs.databricks.com/sql/)
+
+[![Unity Catalog](https://img.shields.io/badge/Governance-Unity%20Catalog-FF3621?style=flat-square&logo=databricks&logoColor=white)](https://docs.databricks.com/data-governance/unity-catalog/)
+[![Medallion Architecture](https://img.shields.io/badge/Architecture-Medallion%20(Bronze%20%7C%20Silver%20%7C%20Gold)-6C47FF?style=flat-square)](https://www.databricks.com/glossary/medallion-architecture)
+[![Analytics Engineering](https://img.shields.io/badge/Practice-Analytics%20Engineering-0D9488?style=flat-square)](https://docs.getdbt.com/guides/best-practices)
+[![Data Quality](https://img.shields.io/badge/Quality-Fail--Fast%20Gates%20%26%20Quarantine-D97706?style=flat-square)]()
 
 ---
 
