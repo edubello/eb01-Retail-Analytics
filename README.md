@@ -1,6 +1,10 @@
 # Retail Analytics Lakehouse — PySpark, Delta Lake & Unity Catalog
 
 Pipeline de Engenharia de Dados ponta a ponta construído no **Databricks** utilizando **PySpark**, **Delta Lake** e **Unity Catalog**, estruturado sob a **Arquitetura Medalhão (Landing, Bronze, Silver e Gold)** e desenhado sob princípios de código modular e configuração orientada a metadados (*metadata-driven*).
+<br> <br>
+[![Databricks](https://img.shields.io/badge/Databricks-Free%20Edition-red?style=flat-square&logo=databricks)](https://databricks.com/)
+[![Delta Lake](https://img.shields.io/badge/Storage-Delta%20Lake-blue?style=flat-square)](https://delta.io/)
+[![Python|154](https://img.shields.io/badge/Language-PySpark-yellow?style=flat-square&logo=python)](https://spark.apache.org/)
 
 ---
 
